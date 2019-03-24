@@ -4,11 +4,11 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 
+
 /**
  * Demo class
  *
  * @author pengbo3
- * @date 2019/3/8 17:13
  */
 @Slf4j
 public class PbRpcHandler extends SimpleChannelInboundHandler<PbRpcResponse> {

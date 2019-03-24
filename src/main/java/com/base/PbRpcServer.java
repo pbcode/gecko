@@ -1,22 +1,19 @@
 package com.base;
 
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Objects;
+
 
 /**
  * Demo class
  *
  * @author pengbo3
- * @date 2019/2/12 11:17
  */
 @Slf4j
 public class PbRpcServer extends SimpleChannelInboundHandler<PbRpcRequest> {

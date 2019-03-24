@@ -1,14 +1,12 @@
 package com.base;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.support.PbRpcService;
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
-import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.apache.curator.framework.CuratorFramework;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -19,18 +17,17 @@ import org.springframework.stereotype.Component;
 
 import java.net.UnknownHostException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import static org.apache.zookeeper.CreateMode.EPHEMERAL;
 import static org.apache.zookeeper.CreateMode.PERSISTENT;
 
+
 /**
  * Demo class
  *
  * @author pengbo3
- * @date 2019/1/23 18:31
  */
 @Component
 public class ServiceBean implements InitializingBean, ApplicationContextAware {
@@ -50,6 +47,7 @@ public class ServiceBean implements InitializingBean, ApplicationContextAware {
     @Value("${zookeeper.address}")
     private String zkAddress;
     private volatile HttpServer httpServer;
+
     @Override
     public void afterPropertiesSet() throws UnknownHostException, InterruptedException {
 

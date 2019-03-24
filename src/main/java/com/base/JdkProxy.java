@@ -16,11 +16,11 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
+
 /**
  * Demo class
  *
  * @author pengbo3
- * @date 2019/3/8 16:44
  */
 @Slf4j
 public class JdkProxy<T> implements InvocationHandler {

@@ -1,10 +1,3 @@
-/**
- * 版权所有@: 杭州铭师堂教育科技发展有限公司
- * 注意：本内容仅限于杭州铭师堂教育科技发展有限公司内部使用，禁止外泄以及用于其他的商业目的
- * CopyRight@: 2018 Hangzhou Mistong Educational Technology Co.,Ltd.
- * All Rights Reserved.
- * Note:Just limited to use by Mistong Educational Technology Co.,Ltd. Others are forbidden.
- */
 package com.base;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -12,17 +5,16 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.UnknownHostException;
 import java.util.Map;
 
+
 /**
- * NettyJaxrsServer
- * <p>
- * Created by huapeng.hhp on 2018/5/1.
+ * Demo class
+ *
+ * @author pengbo3
  */
 @Slf4j
 public class NettyServer implements HttpServer {
@@ -93,5 +85,4 @@ public class NettyServer implements HttpServer {
         } catch (Exception ignore) { // NOPMD
         }
     }
-    /** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 }

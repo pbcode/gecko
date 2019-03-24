@@ -8,7 +8,6 @@ import java.io.Serializable;
  * Demo class
  *
  * @author pengbo3
- * @date 2019/3/9 12:51
  */
 @Data
 public class MovieInfo implements Serializable {

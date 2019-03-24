@@ -7,11 +7,16 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 
+/**
+ * Demo class
+ *
+ * @author pengbo3
+ */
 @EnableAsync
 @SpringBootApplication
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan({"com.test","com.base","com.support"})
+@ComponentScan({"com.test", "com.base", "com.support"})
 public class Demo1Application {
 
     public static void main(String[] args) {

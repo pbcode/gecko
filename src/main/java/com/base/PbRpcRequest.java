@@ -4,11 +4,11 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+
 /**
  * Demo class
  *
  * @author pengbo3
- * @date 2019/1/25 16:57
  */
 @Data
 public class PbRpcRequest implements Serializable {

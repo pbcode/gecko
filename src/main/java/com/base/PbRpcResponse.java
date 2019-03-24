@@ -8,11 +8,11 @@ import lombok.Data;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 
+
 /**
  * Demo class
  *
  * @author pengbo3
- * @date 2019/1/25 17:01
  */
 @Data
 public class PbRpcResponse<T> implements Serializable {

@@ -5,11 +5,11 @@ import com.alibaba.fastjson.parser.Feature;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import lombok.extern.slf4j.Slf4j;
 
+
 /**
  * Demo class
  *
  * @author pengbo3
- * @date 2019/2/12 14:53
  */
 @Slf4j
 public class FastJsonSerializer implements Serializer {

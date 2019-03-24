@@ -6,11 +6,11 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
+
 /**
  * Demo class
  *
  * @author pengbo3
- * @date 2019/1/25 17:02
  */
 public class PbRpcDecoder extends ByteToMessageDecoder {
 

@@ -4,11 +4,11 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 
+
 /**
  * Demo class
  *
  * @author pengbo3
- * @date 2019/1/25 16:55
  */
 public class PbRpcEncoder extends MessageToByteEncoder {
 

@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 /**
  * Demo class
  *
  * @author pengbo3
- * @date 2019/1/23 10:42
  */
 @PbRpcService(serviceName = "helloRpcService", value = IHelloService.class)
 @Service

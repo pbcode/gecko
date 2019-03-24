@@ -23,11 +23,11 @@ import java.util.Set;
 import static org.apache.zookeeper.CreateMode.EPHEMERAL;
 import static org.apache.zookeeper.CreateMode.PERSISTENT;
 
+
 /**
  * Demo class
  *
  * @author pengbo3
- * @date 2019/2/12 16:04
  */
 @Component
 @Slf4j
