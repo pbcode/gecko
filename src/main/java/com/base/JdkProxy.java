@@ -1,6 +1,7 @@
 package com.base;
 
-import com.alibaba.fastjson.JSON;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -79,7 +80,18 @@ public class JdkProxy<T> implements InvocationHandler {
             }
         });
 
-        String url = providers.get(random.nextInt(providers.size()));
+        //模拟负载均衡，暂时按IP最后一位模拟权重
+        List<Invoker> invokers = Lists.newArrayList();
+        for (String url : providers) {
+            Invoker invoker = new Invoker();
+            invoker.setUrl(url);
+            List<String> ips = Splitter.on(".").splitToList(url.split(":")[0]);
+            invoker.setWeight(Integer.parseInt(ips.get(ips.size() - 1)));
+            invokers.add(invoker);
+        }
+
+        LoadBalanceUtils loadBalanceUtils = new LoadBalanceUtils();
+        String url = loadBalanceUtils.randomBalance(invokers);
         String ip = url.split(":")[0];
         int port = Integer.parseInt(url.split(":")[1]);
 
@@ -98,13 +110,4 @@ public class JdkProxy<T> implements InvocationHandler {
         return response.getResult();
     }
 
-    public static void main(String[] args) {
-        MovieInfo movieInfo = new MovieInfo();
-        movieInfo.setMovieName("阿丽塔");
-        String json = JSON.toJSONString(movieInfo);
-        System.out.println(json);
-
-        MovieInfo movieInfo1 = JSON.parseObject(json,MovieInfo.class);
-        System.out.println(movieInfo1.getMovieName());
-    }
 }
