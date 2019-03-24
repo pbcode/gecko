@@ -78,7 +78,7 @@ public class ClientBean implements InitializingBean, ApplicationContextAware {
             List<String> providers = serviceProviderMap.get(remoteServiceName);
             for (Field field : fields) {
                 JdkProxy jdkProxy = new JdkProxy(providers);
-                field.set(fieldObjectNames.get(field), jdkProxy.newProxy(field.getType()));
+                field.set(fieldObjectNames.get(field), jdkProxy.newProxy(field.getType(), remoteServiceName, 1));
             }
         }
     }

@@ -37,8 +37,14 @@ public class JdkProxy<T> implements InvocationHandler {
 
     private Class<T> tClass;
 
-    public T newProxy(Class<T> tClass) {
+    private String serviceName;
+
+    private int balanceType;
+
+    public T newProxy(Class<T> tClass, String remoteServiceName, int balanceType) {
         this.tClass = tClass;
+        this.serviceName = remoteServiceName;
+        this.balanceType = balanceType;
         if (target != null) {
             return (T) target;
         }
@@ -51,7 +57,7 @@ public class JdkProxy<T> implements InvocationHandler {
     }
 
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws InterruptedException {
+    public Object invoke(Object proxy, Method method, Object[] args) throws Exception {
         String methodName = method.getName();
         Class[] params = method.getParameterTypes();
 
@@ -89,9 +95,17 @@ public class JdkProxy<T> implements InvocationHandler {
             invoker.setWeight(Integer.parseInt(ips.get(ips.size() - 1)));
             invokers.add(invoker);
         }
-
+        String url = null;
         LoadBalanceUtils loadBalanceUtils = new LoadBalanceUtils();
-        String url = loadBalanceUtils.randomBalance(invokers);
+        if (balanceType == 1) {
+            url = loadBalanceUtils.randomBalance(invokers);
+        }
+        if (balanceType == 2) {
+            url = loadBalanceUtils.roundRobinLoadBalance(invokers, serviceName);
+        }
+        if (url == null || url.isEmpty()) {
+            throw new Exception();
+        }
         String ip = url.split(":")[0];
         int port = Integer.parseInt(url.split(":")[1]);
 
