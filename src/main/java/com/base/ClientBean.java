@@ -7,6 +7,8 @@ import com.support.PbService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
+import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
+import org.apache.curator.utils.ZKPaths;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +21,9 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import static org.apache.zookeeper.CreateMode.EPHEMERAL;
 import static org.apache.zookeeper.CreateMode.PERSISTENT;
@@ -40,7 +45,7 @@ public class ClientBean implements InitializingBean, ApplicationContextAware {
 
     private ZKUtil zkUtil = new ZKUtil();
 
-    private Map<String, List<String>> serviceProviderMap = Maps.newHashMap();
+    private Map<String, Set<String>> serviceProviderMap = Maps.newConcurrentMap();
     /**
      * 远程服务名称集合
      */
@@ -51,6 +56,8 @@ public class ClientBean implements InitializingBean, ApplicationContextAware {
     private Map<Field, Object> fieldObjectNames = Maps.newHashMap();
 
     private CuratorFramework client;
+
+    private final static ThreadPoolExecutor executor = new ThreadPoolExecutor(20, 100, 5l, TimeUnit.SECONDS, new LinkedBlockingQueue<>(100), new ThreadPoolExecutor.CallerRunsPolicy());
 
     /**
      * 服务的路径
@@ -75,7 +82,7 @@ public class ClientBean implements InitializingBean, ApplicationContextAware {
     private void createJdkProxy() throws IllegalAccessException {
         for (String remoteServiceName : remoteServiceNames) {
             Set<Field> fields = serviceFields.get(remoteServiceName);
-            List<String> providers = serviceProviderMap.get(remoteServiceName);
+            Set<String> providers = serviceProviderMap.get(remoteServiceName);
             for (Field field : fields) {
                 JdkProxy jdkProxy = new JdkProxy(providers);
                 field.set(fieldObjectNames.get(field), jdkProxy.newProxy(field.getType(), remoteServiceName, 1));
@@ -126,9 +133,10 @@ public class ClientBean implements InitializingBean, ApplicationContextAware {
     private void findService() throws Exception {
         for (String remoteServiceName : remoteServiceNames) {
             PathChildrenCache pathChildrenCache = new PathChildrenCache(client, RegistryUtil.getChildPath(remoteServiceName, RegistryUtil.PROVIDER), true);
+            addListener(pathChildrenCache);
             pathChildrenCache.start();
             List<String> list = client.getChildren().forPath(RegistryUtil.getChildPath(remoteServiceName, RegistryUtil.PROVIDER));
-            serviceProviderMap.put(remoteServiceName, list);
+            serviceProviderMap.put(remoteServiceName, Sets.newHashSet(list));
             log.info("find provider name={} list={}", remoteServiceName, list);
         }
     }
@@ -153,4 +161,39 @@ public class ClientBean implements InitializingBean, ApplicationContextAware {
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
+
+
+    private void addListener(PathChildrenCache cache) {
+        // a PathChildrenCacheListener is optional. Here, it's used just to log changes
+        PathChildrenCacheListener listener = (client, event) -> {
+            String path = event.getData().getPath();
+            String[] paths = path.split("/");
+            String remoteServiceName = paths[2].trim();
+            String ip = paths[4].trim();
+            Set<String> serviceIps = serviceProviderMap.get(remoteServiceName);
+            switch (event.getType()) {
+                case CHILD_ADDED: {
+                    if (CollectionUtils.isEmpty(serviceIps)) {
+                        serviceIps = Sets.newHashSet();
+                    }
+                    serviceIps.add(ip);
+                    serviceProviderMap.put(remoteServiceName, serviceIps);
+                    System.out.println("Node changed: " + serviceProviderMap);
+                    break;
+                }
+                case CHILD_UPDATED: {
+                    System.out.println("Node changed: " + ZKPaths.getNodeFromPath(event.getData().getPath()));
+                    break;
+                }
+                case CHILD_REMOVED: {
+                    serviceIps.remove(ip);
+                    serviceProviderMap.put(remoteServiceName, serviceIps);
+                    System.out.println("Node removed: " + ZKPaths.getNodeFromPath(event.getData().getPath()));
+                    break;
+                }
+            }
+        };
+        cache.getListenable().addListener(listener);
+    }
+
 }

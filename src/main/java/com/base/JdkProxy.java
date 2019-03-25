@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
@@ -26,7 +27,7 @@ import java.util.concurrent.CountDownLatch;
 @Slf4j
 public class JdkProxy<T> implements InvocationHandler {
 
-    private List<String> providers;
+    private Set<String> providers;
 
     private Random random = new Random(1);
 
@@ -52,7 +53,7 @@ public class JdkProxy<T> implements InvocationHandler {
         return (T) target;
     }
 
-    public JdkProxy(List<String> providers) {
+    public JdkProxy(Set<String> providers) {
         this.providers = providers;
     }
 
