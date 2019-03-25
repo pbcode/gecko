@@ -23,7 +23,7 @@ public class ZKUtil {
 
     public void startZk(String zkAddress) {
         RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
-        client = CuratorFrameworkFactory.newClient(zkAddress, retryPolicy);
+        client = CuratorFrameworkFactory.newClient(zkAddress, 10000, 10000, retryPolicy);
         client.start();
     }
 
