@@ -1,4 +1,4 @@
-package com.base;
+package com.protocol;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -6,7 +6,6 @@ import com.alibaba.fastjson.parser.Feature;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.lang.reflect.Type;
 
 
 /**

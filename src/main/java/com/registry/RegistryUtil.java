@@ -1,4 +1,4 @@
-package com.base;
+package com.registry;
 
 import java.net.UnknownHostException;
 

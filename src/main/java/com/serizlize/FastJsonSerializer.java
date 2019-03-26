@@ -1,8 +1,9 @@
-package com.base;
+package com.serizlize;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.Feature;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.protocol.PbRpcResponse;
 import lombok.extern.slf4j.Slf4j;
 
 

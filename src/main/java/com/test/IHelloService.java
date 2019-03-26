@@ -1,7 +1,5 @@
 package com.test;
 
-import com.base.MovieInfo;
-
 import java.util.List;
 
 

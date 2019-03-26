@@ -1,6 +1,5 @@
 package com.test;
 
-import com.base.MovieInfo;
 import com.google.common.collect.Lists;
 import com.support.PbRpcService;
 import org.springframework.stereotype.Service;

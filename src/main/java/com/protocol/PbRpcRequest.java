@@ -1,4 +1,4 @@
-package com.base;
+package com.protocol;
 
 import lombok.Data;
 

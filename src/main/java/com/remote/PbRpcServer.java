@@ -1,5 +1,7 @@
-package com.base;
+package com.remote;
 
+import com.protocol.PbRpcRequest;
+import com.protocol.PbRpcResponse;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

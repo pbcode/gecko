@@ -1,4 +1,4 @@
-package com.base;
+package com.proxy;
 
 import lombok.Data;
 
