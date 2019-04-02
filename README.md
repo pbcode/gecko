@@ -1,4 +1,4 @@
-# gecko<br/>
+# gecko(为了了解dubbo相关原理自己实现学习所用)<br/>
 
 自己写的RPC框架，丰富她<br/>
 
